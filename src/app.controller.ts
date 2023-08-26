@@ -1,18 +1,17 @@
-import { Controller, Get,Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get, Res, Req } from '@nestjs/common';
+import { Request, Response } from 'express';
 import NestAuth from './nest-auth/nest-auth.service';
 
 @Controller()
 export class AppController {
-  constructor(
-    private nestAuth: NestAuth,
-  ) {}
+  constructor(private nestAuth: NestAuth) {}
 
   @Get()
-  getHello(@Res() res:Response): void {
+  getHello(@Req() req: Request, @Res() res: Response): void {
+    this.nestAuth.makeToken(res, 'Authorization', 'value');
 
-    this.nestAuth.makeToken(res,'name','value')
+    const verify = this.nestAuth.verifyToken(req, 'Authorization');
 
-    res.send({ message: 'Token saved!' })
+    res.send({ message: 'Token saved!' });
   }
 }
