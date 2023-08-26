@@ -6,6 +6,6 @@ import NestAuth from './nest-auth/nest-auth.service';
 @Module({
   imports: [],
   controllers: [AppController],
-  providers: [AppService, NestAuth],
+  providers: [AppService],
 })
 export class AppModule {}

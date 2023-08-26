@@ -4,13 +4,16 @@ import NestAuth from './nest-auth/nest-auth.service';
 
 @Controller()
 export class AppController {
-  constructor(private nestAuth: NestAuth) {}
 
   @Get()
   getHello(@Req() req: Request, @Res() res: Response): void {
-    this.nestAuth.makeToken(res, 'Authorization', 'value');
+    
+    const nestAuth = new NestAuth(req,res)
 
-    const verify = this.nestAuth.verifyToken(req, 'Authorization');
+    nestAuth.makeToken('Authorization', 'value');
+
+    const verify = nestAuth.verifyToken('Authorization');
+    console.log("🚀 ~ file: app.controller.ts:14 ~ AppController ~ getHello ~ verify:", verify)
 
     res.send({ message: 'Token saved!' });
   }
