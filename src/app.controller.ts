@@ -7,8 +7,8 @@ export class AppController {
 
   @Get()
   getHello(@Req() req: Request, @Res() res: Response): void {
-    
-    const nestAuth = new NestAuth(req,res)
+
+    const nestAuth = new NestAuth(req,res,'jwt')
 
     nestAuth.makeToken('Authorization', 'value');
 

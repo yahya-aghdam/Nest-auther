@@ -6,7 +6,7 @@ const REDIRECT_BACK = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { googleAccessTokenURL, googleURL } from '../providers.url';
+import { providers } from './list';
 import NestAuth from '../nest-auth.service';
 
 @Injectable()
@@ -14,7 +14,7 @@ export default class GoogleProvider {
   constructor(
     @Req() private req: Request,
     @Res() private res: Response,
-    private nestAurh = new NestAuth(req, res),
+    private nestAurh = new NestAuth(req, res,'google'),
   ) {
     this.tokenMaker();
   }
@@ -36,7 +36,6 @@ export default class GoogleProvider {
     scope: string;
     id_token: string;
   }> {
-    const url = googleURL;
     const values = {
       code,
       client_id: clientId,
@@ -48,7 +47,7 @@ export default class GoogleProvider {
     try {
       const searchParams = new URLSearchParams(values);
 
-      const res = await fetch(url, {
+      const res = await fetch(providers.google.tokenUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -67,13 +66,13 @@ export default class GoogleProvider {
 
     const { id_token, access_token } = await this.getTokens({
       code,
-      clientId: GOOGLE_CLIENT_ID as string,
-      clientSecret: GOOGLE_CLIENT_SECRET as string,
+      clientId: GOOGLE_CLIENT_ID ,
+      clientSecret: GOOGLE_CLIENT_SECRET ,
       REDIRECT_URI: GOOGLE_REDIRECT_URI,
     });
 
     // Fetch the user's profile with the access token and bearer
-    let googleUser = await fetch(googleAccessTokenURL + access_token, {
+    let googleUser = await fetch(providers.google.AccessTokenURL + access_token, {
       headers: {
         Authorization: `Bearer ${id_token}`,
       },
