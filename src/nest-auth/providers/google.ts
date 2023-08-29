@@ -1,8 +1,8 @@
 import 'dotenv/config';
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
-const REDIRECT_BACK = process.env.REDIRECT_BACK;
+const GOOGLE_CLIENT_ID:string = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET:string = process.env.GOOGLE_CLIENT_SECRET;
+const GOOGLE_REDIRECT_URI:string = process.env.GOOGLE_REDIRECT_URI;
+const REDIRECT_BACK:string = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
@@ -14,10 +14,8 @@ export default class GoogleProvider {
   constructor(
     @Req() private req: Request,
     @Res() private res: Response,
-    private nestAurh = new NestAuth(req, res,'google'),
-  ) {
-    this.tokenMaker();
-  }
+  ) {}
+  private nestAuth = new NestAuth(this.req, this.res, 'google');
 
   private async getTokens({
     code,
@@ -62,21 +60,24 @@ export default class GoogleProvider {
   }
 
   async tokenMaker() {
-    const code = this.req.query.code as string;
+    const code : string = this.req.query.code as string;
 
     const { id_token, access_token } = await this.getTokens({
       code,
-      clientId: GOOGLE_CLIENT_ID ,
-      clientSecret: GOOGLE_CLIENT_SECRET ,
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
       REDIRECT_URI: GOOGLE_REDIRECT_URI,
     });
 
     // Fetch the user's profile with the access token and bearer
-    let googleUser = await fetch(providers.google.AccessTokenURL + access_token, {
-      headers: {
-        Authorization: `Bearer ${id_token}`,
+    let googleUser = await fetch(
+      providers.google.AccessTokenURL + access_token,
+      {
+        headers: {
+          Authorization: `Bearer ${id_token}`,
+        },
       },
-    })
+    )
       .then((res) => res.json())
       .catch((error) => {
         console.error(error.message);
@@ -87,9 +88,10 @@ export default class GoogleProvider {
     googleUser['expire_at'] = expire_at;
 
     // save token in cookie
-    this.nestAurh.makeToken('Authorization', googleUser);
+    this.nestAuth.makeToken('Authorization', googleUser);
 
     //   Redirect user
-    this.res.redirect(REDIRECT_BACK as string);
+    this.res.redirect(REDIRECT_BACK);
+    
   }
 }

@@ -5,7 +5,6 @@ import { Injectable, Res, Req } from '@nestjs/common';
 import { CookieOptions, Request, Response } from 'express';
 import TokenT from './interface/token';
 var jwt = require('jsonwebtoken');
-import { providers } from './providers/list';
 import { ProviderListT } from './interface/providers';
 import { googleUrls, redirect_api_url } from './providers/url';
 
@@ -14,7 +13,7 @@ export default class NestAuth {
   constructor(
     @Req() private req: Request,
     @Res() private res: Response,
-    private provider: ProviderListT,
+    private provider?: ProviderListT,
   ) {}
 
   private parseCookieString(cookieString: string): Record<string, string> {
@@ -30,18 +29,21 @@ export default class NestAuth {
   }
 
   verifyToken(tokenName: string = 'Authorization'): TokenT {
-    let cookies = this.parseCookieString(this.req.headers.cookie);
     let responce: TokenT = {
       is_verified: false,
     };
-    try {
-      responce.data = jwt.verify(cookies[tokenName], NEST_AUTH_SECRET);
 
-      responce.is_verified = true;
-    } catch (err) {
-      console.log(err);
+    if (this.req.headers.cookie != undefined) {
+      let cookies = this.parseCookieString(this.req.headers.cookie);
+
+      try {
+        responce.data = jwt.verify(cookies[tokenName], NEST_AUTH_SECRET);
+
+        responce.is_verified = true;
+      } catch (err) {
+        console.log(err);
+      }
     }
-
     return responce;
   }
 
@@ -50,7 +52,7 @@ export default class NestAuth {
     data: any,
     options?: CookieOptions,
     algorithm?: string,
-  ): void {
+  ) {
     const token = jwt.sign(
       {
         data: data,
@@ -59,12 +61,10 @@ export default class NestAuth {
       NEST_AUTH_SECRET,
     );
 
-    this.res.cookie(name, token, options);
+    return this.res.cookie(name, token, options);
   }
 
-  redirectToProvider(
-    scope: string = googleUrls.scope,
-  ) {
+  redirectToProvider(scope: string = googleUrls.scope) {
     let url: string;
 
     // google
@@ -81,10 +81,13 @@ export default class NestAuth {
       url = `${googleUrls.mainUrl}${googleParams.toString()}`;
     }
 
+    if (this.provider != undefined) {
+      this.makeToken('provider', this.provider);
+    }
+    return this.res.redirect(url);
+  }
 
-
-
-
-    this.res.redirect(url);
+  deleteToken(tokenName: string) {
+    this.res.clearCookie(tokenName);
   }
 }
