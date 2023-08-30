@@ -1,5 +1,7 @@
 interface ProviderUtlT {
-  tokenUrl: string;
+  tokenUrl?: string;
+  AcessAPI?: string;
+  AcessAPIEmail?: string;
   AccessTokenURL: string;
 }
 

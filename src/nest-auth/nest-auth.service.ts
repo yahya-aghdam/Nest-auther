@@ -1,12 +1,13 @@
 import 'dotenv/config';
 const NEST_AUTH_SECRET: string = process.env.NEST_AUTH_SECRET;
 const GOOGLE_CLIENT_ID: string = process.env.GOOGLE_CLIENT_ID;
+const GITHUB_CLIENT_ID: string = process.env.GITHUB_CLIENT_ID;
 import { Injectable, Res, Req } from '@nestjs/common';
 import { CookieOptions, Request, Response } from 'express';
 import TokenT from './interface/token';
 var jwt = require('jsonwebtoken');
 import { ProviderListT } from './interface/providers';
-import { googleUrls, redirect_api_url } from './providers/url';
+import { githubUrls, googleUrls, redirect_api_url } from './providers/url';
 
 @Injectable()
 export default class NestAuth {
@@ -64,26 +65,39 @@ export default class NestAuth {
     return this.res.cookie(name, token, options);
   }
 
-  redirectToProvider(scope: string = googleUrls.scope) {
+  redirectToProvider(scope: string = 'NOT_ENTERED') {
     let url: string;
+    let newScope = scope;
 
     // google
     if (this.provider == 'google') {
-      const googleValues = {
+      if (scope == 'NOT_ENTERED') newScope = googleUrls.scope;
+      const googleParams = new URLSearchParams({
         redirect_uri: redirect_api_url,
         client_id: GOOGLE_CLIENT_ID,
         access_type: 'offline',
         response_type: 'code',
         prompt: 'consent',
-        scope: scope,
-      };
-      const googleParams = new URLSearchParams(googleValues);
+        scope: newScope,
+      });
       url = `${googleUrls.mainUrl}${googleParams.toString()}`;
+    }
+
+    // github
+    if (this.provider == 'github') {
+      if (scope == 'NOT_ENTERED') newScope = githubUrls.scope;
+      const githubParams = new URLSearchParams({
+        redirect_uri: redirect_api_url,
+        client_id: GITHUB_CLIENT_ID,
+        scope: newScope,
+      });
+      url = `${githubUrls.mainUrl}${githubParams.toString()}`;
     }
 
     if (this.provider != undefined) {
       this.makeToken('provider', this.provider);
     }
+
     return this.res.redirect(url);
   }
 
