@@ -14,4 +14,4 @@ export interface ProvidersT {
   twitter?: ProviderURLT;
 }
 
-export type ProviderListT = 'google' | 'github' | 'twitter' | 'jwt' ;
+export type ProviderListT = 'google' | 'github' | 'jwt' ;

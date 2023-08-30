@@ -21,3 +21,4 @@ export const githubUrls = {
   AcessAPIEmail: 'https://api.github.com/user/emails',
   AccessTokenURL: 'https://github.com/login/oauth/access_token?',
 };
+
