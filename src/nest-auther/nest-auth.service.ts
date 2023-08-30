@@ -10,7 +10,7 @@ import { ProviderListT } from './interface/providers';
 import { githubUrls, googleUrls, redirect_api_url } from './providers/url';
 
 @Injectable()
-export default class NestAuth {
+export default class NestAuther {
   constructor(
     @Req() private req: Request,
     @Res() private res: Response,

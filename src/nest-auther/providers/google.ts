@@ -5,7 +5,7 @@ const REDIRECT_BACK: string = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import NestAuth from '../nest-auth.service';
+import NestAuther from '../nest-auth.service';
 import { googleUrls, redirect_api_url } from './url';
 import {
   GetTokenRequestInputT,
@@ -19,7 +19,7 @@ export default class GoogleProvider {
     @Req() private req: Request,
     @Res() private res: Response,
   ) {}
-  private nestAuth = new NestAuth(this.req, this.res, 'google');
+  private nestAuther = new NestAuther(this.req, this.res, 'google');
 
   private async getTokenRequest({
     code,
@@ -83,8 +83,8 @@ export default class GoogleProvider {
 
 
     // save token in cookie
-    this.nestAuth.makeToken('Authorization', googleUser);
-    this.nestAuth.deleteToken('provider');
+    this.nestAuther.makeToken('Authorization', googleUser);
+    this.nestAuther.deleteToken('provider');
     //   Redirect user
     this.res.redirect(REDIRECT_BACK);
   }

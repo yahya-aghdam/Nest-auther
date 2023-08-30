@@ -5,7 +5,7 @@ const REDIRECT_BACK: string = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import NestAuth from '../nest-auth.service';
+import NestAuther from '../nest-auth.service';
 import { githubUrls, redirect_api_url } from './url';
 import { UserT } from '../interface/user';
 import {
@@ -19,7 +19,7 @@ export default class GithubProvider {
     @Req() private req: Request,
     @Res() private res: Response,
   ) {}
-  private nestAuth = new NestAuth(this.req, this.res, 'github');
+  private nestAuther = new NestAuther(this.req, this.res, 'github');
 
   private async getTokenRequest({
     code,
@@ -98,8 +98,8 @@ export default class GithubProvider {
         });
     }
     // save token in cookie
-    this.nestAuth.makeToken('Authorization', githubUser);
-    this.nestAuth.deleteToken('provider');
+    this.nestAuther.makeToken('Authorization', githubUser);
+    this.nestAuther.deleteToken('provider');
     //   Redirect user
     this.res.redirect(REDIRECT_BACK);
   }

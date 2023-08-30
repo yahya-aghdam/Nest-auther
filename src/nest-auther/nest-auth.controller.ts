@@ -1,19 +1,19 @@
 import { Controller, Get, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import NestAuth from './nest-auth.service';
+import NestAuther from './nest-auth.service';
 import GoogleProvider from './providers/google';
 import GithubProvider from './providers/github';
 
 @Controller("api/nest-auth")
-export class NestAuthController {
+export class NestAutherController {
   @Get()
   async auther(
     @Req() req: Request,
     @Res() res: Response,
-    nestAuth = new NestAuth(req, res),
+    nestAuther = new NestAuther(req, res),
   ) {
    
-    const provider = nestAuth.verifyToken('provider');
+    const provider = nestAuther.verifyToken('provider');
     if (provider.is_verified) {
       // Google
       if (provider.data.data == 'google') {
@@ -28,8 +28,8 @@ export class NestAuthController {
       }
       
     } else {
-      nestAuth.deleteToken('provider');
-      nestAuth.deleteToken('Authorization');
+      nestAuther.deleteToken('provider');
+      nestAuther.deleteToken('Authorization');
       return res.redirect('/');
     }
   }
