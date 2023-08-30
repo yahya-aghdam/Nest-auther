@@ -5,9 +5,8 @@ const REDIRECT_BACK: string = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { providers } from './list';
 import NestAuth from '../nest-auth.service';
-import { redirect_api_url } from './url';
+import { googleUrls, redirect_api_url } from './url';
 import {
   GetTokenRequestInputT,
   GetTokenRequestReturn,
@@ -36,7 +35,7 @@ export default class GoogleProvider {
         grant_type: 'authorization_code',
       });
 
-      const res = await fetch(providers.google.tokenUrl, {
+      const res = await fetch(googleUrls.tokenUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,7 +60,7 @@ export default class GoogleProvider {
 
     // Fetch the user's profile with the access token and bearer
     let googleUser: UserT;
-    await fetch(providers.google.AccessTokenURL + access_token, {
+    await fetch(googleUrls.AccessTokenURL + access_token, {
       headers: {
         Authorization: `Bearer ${id_token}`,
       },

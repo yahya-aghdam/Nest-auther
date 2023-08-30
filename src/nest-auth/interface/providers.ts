@@ -1,4 +1,6 @@
-interface ProviderUtlT {
+export interface ProviderURLT {
+  mainUrl:string
+  scope: string
   tokenUrl?: string;
   AcessAPI?: string;
   AcessAPIEmail?: string;
@@ -7,9 +9,9 @@ interface ProviderUtlT {
 
 export interface ProvidersT {
   jwt?: string;
-  google?: ProviderUtlT;
-  github?: ProviderUtlT;
-  twitter?: ProviderUtlT;
+  google?: ProviderURLT;
+  github?: ProviderURLT;
+  twitter?: ProviderURLT;
 }
 
 export type ProviderListT = 'google' | 'github' | 'twitter' | 'jwt' ;

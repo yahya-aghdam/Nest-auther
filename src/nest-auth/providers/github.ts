@@ -5,9 +5,8 @@ const REDIRECT_BACK: string = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { providers } from './list';
 import NestAuth from '../nest-auth.service';
-import { redirect_api_url } from './url';
+import { githubUrls, redirect_api_url } from './url';
 import { UserT } from '../interface/user';
 import {
   GetTokenRequestInputT,
@@ -36,7 +35,7 @@ export default class GithubProvider {
       });
 
       const res = await fetch(
-        providers.github.AccessTokenURL + searchParams.toString(),
+        githubUrls.AccessTokenURL + searchParams.toString(),
         { method: 'POST', headers: { Accept: 'application/json' } },
       );
       const toReturn = await res.json();
@@ -58,7 +57,7 @@ export default class GithubProvider {
 
     // Fetch the user's profile with the access token and bearer
     let githubUser: UserT;
-    await fetch(providers.github.AcessAPI, {
+    await fetch(githubUrls.AcessAPI, {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
@@ -80,7 +79,7 @@ export default class GithubProvider {
 
     if (githubUser.email == undefined) {
       // get user primary email address
-      await fetch(providers.github.AcessAPIEmail, {
+      await fetch(githubUrls.AcessAPIEmail, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
