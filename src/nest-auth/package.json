@@ -1,0 +1,30 @@
+{
+  "name": "nest-auth",
+  "version": "1.0.0",
+  "description": "Easy auth",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scorpio-demon/Nest-auth.git"
+  },
+  "keywords": [
+    "Auth",
+    "Google",
+    "Github",
+    "OAuth2",
+    "Oauth"
+  ],
+  "author": "Radmehr Aghdam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scorpio-demon/Nest-auth/issues"
+  },
+  "homepage": "https://github.com/scorpio-demon/Nest-auth#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
