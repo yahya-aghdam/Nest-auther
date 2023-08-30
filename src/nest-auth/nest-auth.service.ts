@@ -38,9 +38,12 @@ export default class NestAuth {
       let cookies = this.parseCookieString(this.req.headers.cookie);
 
       try {
-        responce.data = jwt.verify(cookies[tokenName], NEST_AUTH_SECRET);
+        const decodedToken = jwt.verify(cookies[tokenName], NEST_AUTH_SECRET);
 
-        responce.is_verified = true;
+        if (decodedToken.data.data.expire_at > Date.now()) {
+          responce.data = decodedToken
+          responce.is_verified = true;
+        }
       } catch (err) {
         console.log(err);
       }
