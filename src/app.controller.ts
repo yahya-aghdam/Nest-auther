@@ -6,7 +6,7 @@ import NestAuth from './nest-auth/nest-auth.service';
 export class AppController {
   @Get()
   getHello(@Req() req: Request, @Res() res: Response): void {
-    const nestAuth = new NestAuth(req, res, 'github');
+    const nestAuth = new NestAuth(req, res, 'google');
     if (!nestAuth.verifyToken().is_verified) {
       return nestAuth.redirectToProvider();
     } else {

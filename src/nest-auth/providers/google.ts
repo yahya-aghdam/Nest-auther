@@ -1,13 +1,18 @@
 import 'dotenv/config';
-const GOOGLE_CLIENT_ID:string = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET:string = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_BACK:string = process.env.REDIRECT_BACK;
+const GOOGLE_CLIENT_ID: string = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET: string = process.env.GOOGLE_CLIENT_SECRET;
+const REDIRECT_BACK: string = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { providers } from './list';
 import NestAuth from '../nest-auth.service';
 import { redirect_api_url } from './url';
+import {
+  GetTokenRequestInputT,
+  GetTokenRequestReturn,
+} from '../interface/getTokenRequest';
+import { UserT } from '../interface/user';
 
 @Injectable()
 export default class GoogleProvider {
@@ -21,18 +26,7 @@ export default class GoogleProvider {
     code,
     clientId,
     clientSecret,
-  }: {
-    code: string;
-    clientId: string;
-    clientSecret: string;
-  }): Promise<{
-    access_token: string;
-    expire_at: Number;
-    refresh_token: string;
-    scope: string;
-    id_token: string;
-  }> {
-
+  }: GetTokenRequestInputT): Promise<GetTokenRequestReturn> {
     try {
       const searchParams = new URLSearchParams({
         code,
@@ -51,13 +45,13 @@ export default class GoogleProvider {
       });
       return res.json();
     } catch (error: any) {
-      console.error("Failed to fetch auth tokens");
+      console.error('Failed to fetch auth tokens');
       throw new Error(error.message);
     }
   }
 
   async tokenMaker() {
-    const code : string = this.req.query.code as string;
+    const code: string = this.req.query.code as string;
 
     const { id_token, access_token } = await this.getTokenRequest({
       code,
@@ -66,27 +60,33 @@ export default class GoogleProvider {
     });
 
     // Fetch the user's profile with the access token and bearer
-    let googleUser = await fetch(
-      providers.google.AccessTokenURL + access_token,
-      {
-        headers: {
-          Authorization: `Bearer ${id_token}`,
-        },
+    let googleUser: UserT;
+    await fetch(providers.google.AccessTokenURL + access_token, {
+      headers: {
+        Authorization: `Bearer ${id_token}`,
       },
-    )
-      .then((res) => res.json())
+    })
+      .then(async(res) => {
+        const user = await res.json();
+        console.log("🚀 ~ file: google.ts:71 ~ GoogleProvider ~ .then ~ user:", user)
+        googleUser = {
+          id: user.id as string,
+          name: user.name as string,
+          image: user.picture as string,
+          email: user.email,
+          expire_at: Date.now() + 15 * 24 * 60 * 60 * 1000, // One month
+        };
+      })
       .catch((error) => {
-        console.error("Failed to create authed token");
+        console.error('Failed to fetch access api');
         throw new Error(error.message);
       });
 
-    googleUser['expire_at'] = Date.now() + 15 * 24 * 60 * 60 * 1000; // One month
 
     // save token in cookie
     this.nestAuth.makeToken('Authorization', googleUser);
-    this.nestAuth.deleteToken('provider')
+    this.nestAuth.deleteToken('provider');
     //   Redirect user
     this.res.redirect(REDIRECT_BACK);
-    
   }
 }
