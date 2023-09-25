@@ -1,6 +1,6 @@
 {
   "name": "nest-auther",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Easy auth",
   "main": "index.ts",
   "scripts": {
@@ -15,7 +15,10 @@
     "Google",
     "Github",
     "OAuth2",
-    "Oauth"
+    "Oauth",
+    "Nest",
+    "Nestjs",
+    "Nest.js"
   ],
   "author": "Radmehr Aghdam",
   "license": "MIT",
