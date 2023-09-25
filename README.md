@@ -1,7 +1,7 @@
 # Nest-auth
 
 ![License](https://img.shields.io/badge/License-MIT-blue)
-![Version](https://img.shields.io/badge/Version-1.0.1-orange)
+![Version](https://img.shields.io/badge/Version-1.0.2-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-20-blue)
 [![npm](https://img.shields.io/npm/dt/your-package.svg)](https://www.npmjs.com/package/your-package)
 
