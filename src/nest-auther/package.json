@@ -1,6 +1,6 @@
 {
   "name": "nest-auther",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Easy auth",
   "main": "index.ts",
   "types": "index.d.ts",
