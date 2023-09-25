@@ -1,5 +1,6 @@
 # Nest-auth
 
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/scorpio-demon/Nest-auther/codeql.yml)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Version](https://img.shields.io/badge/Version-1.0.2-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-20-blue)
