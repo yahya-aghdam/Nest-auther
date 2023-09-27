@@ -22,7 +22,7 @@ Also, you can use it for email auth.
 ## Install
 
 1. **First install the package:**
-   `npm install nest-auth`
+   `npm install nest-auther`
 2. **Create a `.env` file in your root path and put this sample code in it:**
 
 ```env
