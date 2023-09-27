@@ -1,4 +1,4 @@
-# Nest-auth
+# Nest-auther
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/scorpio-demon/Nest-auther/codeql.yml)
 ![License](https://img.shields.io/badge/License-MIT-blue)
@@ -6,7 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-20-blue)
 [![npm](https://img.shields.io/npm/dt/nest-auther.svg)](https://www.npmjs.com/package/nest-auther)
 
-- [Nest-auth](#nest-auth)
+- [Nest-auther](#nest-auther)
   - [Install](#install)
   - [How to use it?](#how-to-use-it)
   - [What you can use from `nestAuther` object?](#what-you-can-use-from-nestauther-object)
@@ -16,7 +16,7 @@
 
 Easy authentication system for Nestjs
 
-Nest-auth is a super light-weight lib to work with Google and Github OAuth2 system. Super easy usage and stable!
+Nest-auther is a super light-weight lib to work with Google and Github OAuth2 system. Super easy usage and stable!
 Also, you can use it for email auth.
 
 ## Install
@@ -56,7 +56,7 @@ To create github oauth id, first login and click here 👉 <https://github.com/s
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { NestAutherController } from 'nest-auth';
+import { NestAutherController } from 'nest-auther';
 
 @Module({
   imports: [],
@@ -77,7 +77,7 @@ Here is 3 options to use this lib:
 First import neccessary libs in a controlle file:
 
 ```typescript
-import { NestAuther } from 'nest-auth';
+import { NestAuther } from 'nest-auther';
 import { Request, Response } from 'express';
 ```
 
@@ -160,7 +160,7 @@ const tokenData = nestAuther.verifyToken().data.data;
 ```typescript
 import { Controller, Get, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { NestAuther } from 'nest-auth';
+import { NestAuther } from 'nest-auther';
 
 @Controller()
 export class AppController {
