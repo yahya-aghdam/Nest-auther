@@ -1,9 +1,13 @@
 # Nest-auther
 
+<div style="text-align:center; margin-bottom: 60px; margin-top: 30px;">
+  <img src="./nest-auther.png" alt="Image Alt Text" width="200" height="200" />
+</div>
+
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/scorpio-demon/Nest-auther/codeql.yml)
 ![License](https://img.shields.io/badge/License-MIT-blue)
-![Version](https://img.shields.io/badge/Version-1.0.2-orange)
-![TypeScript](https://img.shields.io/badge/TypeScript-20-blue)
+![Version](https://img.shields.io/badge/Version-1.0.11-orange)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 [![npm](https://img.shields.io/npm/dt/nest-auther.svg)](https://www.npmjs.com/package/nest-auther)
 
 - [Nest-auther](#nest-auther)
