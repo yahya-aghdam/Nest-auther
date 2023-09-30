@@ -1,8 +1,6 @@
 # Nest-auther
 
-<div style="text-align:center; margin-bottom: 60px; margin-top: 30px;">
-  <img src="./nest-auther.png" alt="Image Alt Text" width="200" height="200" />
-</div>
+<img src="./nest-auther.png" alt="Image Alt Text" width="200" height="200" style="display: block; margin: 30 auto" />
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/scorpio-demon/Nest-auther/codeql.yml)
 ![License](https://img.shields.io/badge/License-MIT-blue)
