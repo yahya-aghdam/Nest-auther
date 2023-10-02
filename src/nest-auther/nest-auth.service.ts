@@ -9,12 +9,19 @@ var jwt = require('jsonwebtoken');
 import { ProviderListT } from './interface/providers';
 import { githubUrls, googleUrls, redirect_api_url } from './providers/url';
 
+/**
+ * You can work with Google, Github and local JWT for auth in nest.
+ *
+ * @param {Request} req - Express request
+ * @param {Response} res - Express responce
+ * @param {ProviderListT} provider - Provider - Google, Github, JWT (for local usage)
+ */
 @Injectable()
 export default class NestAuther {
   constructor(
     @Req() private req: Request,
     @Res() private res: Response,
-    private provider?: ProviderListT,
+    private provider: ProviderListT,
   ) {}
 
   private parseCookieString(cookieString: string): Record<string, string> {
@@ -29,7 +36,13 @@ export default class NestAuther {
     return cookieObject;
   }
 
-  verifyToken(tokenName: string = 'Authorization'): TokenT {
+  /**
+   * Verify token by name that saved in cookies
+   *
+   * @param {string} tokenName - (optional) Default name for token is `Authorization`
+   * @return {TokenT}  Returns an object that has `is_verified` for verification and `data` for decrypted data of token.
+   */
+  public verifyToken(tokenName: string = 'Authorization'): TokenT {
     let responce: TokenT = {
       is_verified: false,
     };
@@ -41,7 +54,7 @@ export default class NestAuther {
         const decodedToken = jwt.verify(cookies[tokenName], NEST_AUTH_SECRET);
 
         if (decodedToken.data.data.expire_at > Date.now()) {
-          responce.data = decodedToken
+          responce.data = decodedToken;
           responce.is_verified = true;
         }
       } catch (err) {
@@ -51,7 +64,15 @@ export default class NestAuther {
     return responce;
   }
 
-  makeToken(
+  /**
+   * Make token and save it in cookies
+   *
+   * @param {string} name - Name of token
+   * @param {any} data - Data of token
+   * @param {CookieOptions} options - (optional) Cookie options
+   * @param {string} algorithm - (optional) Cryption algorithm method. Default is RS256
+   */
+  public makeToken(
     name: string,
     data: any,
     options?: CookieOptions,
@@ -68,7 +89,12 @@ export default class NestAuther {
     return this.res.cookie(name, token, options);
   }
 
-  redirectToProvider(scope: string = 'NOT_ENTERED') {
+  /**
+   * Redirect user to the provider to auth
+   *
+   * @param {string} scope - (optional) You can enter your scopes. Default scopes will not work if you add yours.
+   */
+  public redirectToProvider(scope: string = 'NOT_ENTERED') {
     let url: string;
     let newScope = scope;
 
@@ -104,7 +130,12 @@ export default class NestAuther {
     return this.res.redirect(url);
   }
 
-  deleteToken(tokenName: string) {
+    /**
+   * Delete token by name
+   *
+   * @param {string} tokenName - Name of the token will be deleted
+   */
+  public deleteToken(tokenName: string) {
     this.res.clearCookie(tokenName);
   }
 }
