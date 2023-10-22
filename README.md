@@ -6,12 +6,14 @@
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/scorpio-demon/Nest-auther/codeql.yml)
 ![License](https://img.shields.io/badge/License-MIT-blue)
-![Version](https://img.shields.io/badge/Version-1.0.11-orange)
+![Version](https://img.shields.io/badge/Version-1.0.12-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 [![npm](https://img.shields.io/npm/dt/nest-auther.svg)](https://www.npmjs.com/package/nest-auther)
 
 - [Nest-auther](#nest-auther)
   - [Install](#install)
+  - [Tips](#tips)
+    - [Redirect back address for provider](#redirect-back-address-for-provider)
   - [How to use it?](#how-to-use-it)
   - [What you can use from `nestAuther` object?](#what-you-can-use-from-nestauther-object)
   - [A full example of usage](#a-full-example-of-usage)
@@ -45,15 +47,6 @@ GITHUB_CLIENT_SECRET=[paste_your_secret_id]
 REDIRECT_BACK=/
 ```
 
-To create secure JWT secret key use this code in terminal:
-`node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"`
-
-⚠️⚠️⚠️ DONT FORGET TO PASTE YOUR ID IN `.env` FILE ⚠️⚠️⚠️
-
-To create google oauth id 👉 <https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid>
-
-To create github oauth id, first login and click here 👉 <https://github.com/settings/applications/new>
-
 3. **Add NestAutherController to `app.module.ts` file:**
 
 ```typescript
@@ -69,6 +62,25 @@ import { NestAutherController } from 'nest-auther';
 })
 export class AppModule {}
 ```
+## Tips
+To create secure JWT secret key use this code in terminal:
+`node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"`
+
+⚠️⚠️⚠️ DONT FORGET TO PASTE YOUR ID IN `.env` FILE ⚠️⚠️⚠️
+
+To create google oauth id 👉 <https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid>
+
+To create github oauth id, first login and click here 👉 <https://github.com/settings/applications/new>
+
+### Redirect back address for provider
+
+The address you will add to your provider for redirect back is:
+
+👉 For local host:
+`http://localhost:3000/api/nest-auth`
+
+👉 For real domain:
+`https://[your-domain-in-here]/api/nest-auth`
 
 ## How to use it?
 
