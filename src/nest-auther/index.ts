@@ -1,4 +1,4 @@
-import NestAuther from './nest-auth.service';
+import NestAuther from './nest-auther.service';
 
 export { NestAuther };
-export { NestAutherController } from './nest-auth.controller';
+export { NestAutherController } from './nest-auther.controller';

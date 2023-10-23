@@ -40,9 +40,13 @@ export default class NestAuther {
    * Verify token by name that saved in cookies
    *
    * @param {string} tokenName - (optional) Default name for token is `Authorization`
+   * @param {boolean} checkTime - (optional) Check expiration time of token
    * @return {TokenT}  Returns an object that has `is_verified` for verification and `data` for decrypted data of token.
    */
-  public verifyToken(tokenName: string = 'Authorization'): TokenT {
+  verifyToken(
+    tokenName: string = 'Authorization',
+    checkTime: boolean = false,
+  ): TokenT {
     let responce: TokenT = {
       is_verified: false,
     };
@@ -50,15 +54,35 @@ export default class NestAuther {
     if (this.req.headers.cookie != undefined) {
       let cookies = this.parseCookieString(this.req.headers.cookie);
 
-      try {
-        const decodedToken = jwt.verify(cookies[tokenName], NEST_AUTH_SECRET);
+      if (cookies[tokenName] != undefined) {
+        let decodedToken;
+        try {
+          jwt.verify(
+            cookies[tokenName],
+            NEST_AUTH_SECRET,
+            function (err: any, decoded: any) {
+              if (decoded) {
+                decodedToken = decoded;
+              }
+            },
+          );
 
-        if (decodedToken.data.data.expire_at > Date.now()) {
-          responce.data = decodedToken;
-          responce.is_verified = true;
+          if (checkTime) {
+            if (decodedToken.data.data.expire_at > Date.now()) {
+              responce.data = decodedToken;
+              responce.is_verified = true;
+            }
+          } else {
+            if (decodedToken) {
+              responce.data = decodedToken;
+              responce.is_verified = true;
+            }
+          }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
+      } else {
+        console.log(`'${tokenName}' not found in cookies`);
       }
     }
     return responce;
@@ -72,7 +96,7 @@ export default class NestAuther {
    * @param {CookieOptions} options - (optional) Cookie options
    * @param {string} algorithm - (optional) Cryption algorithm method. Default is RS256
    */
-  public makeToken(
+  makeToken(
     name: string,
     data: any,
     options?: CookieOptions,
@@ -94,7 +118,7 @@ export default class NestAuther {
    *
    * @param {string} scope - (optional) You can enter your scopes. Default scopes will not work if you add yours.
    */
-  public redirectToProvider(scope: string = 'NOT_ENTERED') {
+  redirectToProvider(scope: string = 'NOT_ENTERED') {
     let url: string;
     let newScope = scope;
 
@@ -130,12 +154,12 @@ export default class NestAuther {
     return this.res.redirect(url);
   }
 
-    /**
+  /**
    * Delete token by name
    *
    * @param {string} tokenName - Name of the token will be deleted
    */
-  public deleteToken(tokenName: string) {
+  deleteToken(tokenName: string) {
     this.res.clearCookie(tokenName);
   }
 }

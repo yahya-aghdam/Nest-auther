@@ -5,7 +5,7 @@ const REDIRECT_BACK: string = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import NestAuther from '../nest-auth.service';
+import NestAuther from '../nest-auther.service';
 import { githubUrls, redirect_api_url } from './url';
 import { UserT } from '../interface/user';
 import {

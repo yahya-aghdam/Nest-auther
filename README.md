@@ -77,10 +77,10 @@ To create github oauth id, first login and click here 👉 <https://github.com/s
 The address you will add to your provider for redirect back is:
 
 👉 For local host:
-`http://localhost:3000/api/nest-auth`
+`http://localhost:3000/api/nest-auther`
 
 👉 For real domain:
-`https://[your-domain-in-here]/api/nest-auth`
+`https://[your-domain-in-here]/api/nest-auther`
 
 ## How to use it?
 

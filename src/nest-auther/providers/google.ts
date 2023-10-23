@@ -5,7 +5,7 @@ const REDIRECT_BACK: string = process.env.REDIRECT_BACK;
 
 import { Injectable, Res, Req } from '@nestjs/common';
 import { Request, Response } from 'express';
-import NestAuther from '../nest-auth.service';
+import NestAuther from '../nest-auther.service';
 import { googleUrls, redirect_api_url } from './url';
 import {
   GetTokenRequestInputT,
@@ -50,6 +50,7 @@ export default class GoogleProvider {
   }
 
   async tokenMaker() {
+    console.log('token maker hittttttttttttttttttt')
     const code: string = this.req.query.code as string;
 
     const { id_token, access_token } = await this.getTokenRequest({
@@ -67,7 +68,6 @@ export default class GoogleProvider {
     })
       .then(async(res) => {
         const user = await res.json();
-        console.log("🚀 ~ file: google.ts:71 ~ GoogleProvider ~ .then ~ user:", user)
         googleUser = {
           id: user.id as string,
           name: user.name as string,
