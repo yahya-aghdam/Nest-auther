@@ -50,7 +50,6 @@ export default class GoogleProvider {
   }
 
   async tokenMaker() {
-    console.log('token maker hittttttttttttttttttt')
     const code: string = this.req.query.code as string;
 
     const { id_token, access_token } = await this.getTokenRequest({

@@ -6,9 +6,8 @@
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/scorpio-demon/Nest-auther/codeql.yml)
 ![License](https://img.shields.io/badge/License-MIT-blue)
-![Version](https://img.shields.io/badge/Version-1.0.12-orange)
+![Version](https://img.shields.io/badge/Version-1.1.1-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-[![npm](https://img.shields.io/npm/dt/nest-auther.svg)](https://www.npmjs.com/package/nest-auther)
 
 - [Nest-auther](#nest-auther)
   - [Install](#install)
@@ -28,24 +27,28 @@ Also, you can use it for email auth.
 ## Install
 
 1. **First install the package:**
-   `npm install nest-auther`
-2. **Create a `.env` file in your root path and put this sample code in it:**
 
-```env
-NEST_AUTH_SECRET=[paste_your_secret_jwt_sign_code]
-MAIN_URL=http://localhost:3000/
-
-# GOOGLE
-GOOGLE_CLIENT_ID=[paste_your_client_id]
-GOOGLE_CLIENT_SECRET=[paste_your_secret_id]
-
-# GITHUB
-GITHUB_CLIENT_ID=[paste_your_client_id]
-GITHUB_CLIENT_SECRET=[paste_your_secret_id]
-
-# REDIRECT BACK AFTER SUCCESS AUTH like: /test will gose to ==> http://mainurl.com/test
-REDIRECT_BACK=/
+```bash
+git clone https://github.com/yahya-aghdam/Nest-auther.git
 ```
+
+2. **Create a `.env` file in root path and put this sample code in it:**
+
+  ```ini
+  NEST_AUTH_SECRET=[paste_your_secret_jwt_sign_code]
+  MAIN_URL=http://localhost:3000/
+
+  # GOOGLE
+  GOOGLE_CLIENT_ID=[paste_your_client_id]
+  GOOGLE_CLIENT_SECRET=[paste_your_secret_id]
+
+  # GITHUB
+  GITHUB_CLIENT_ID=[paste_your_client_id]
+  GITHUB_CLIENT_SECRET=[paste_your_secret_id]
+
+  # REDIRECT BACK AFTER SUCCESS AUTH like: /test will gose to ==> mainurl.com/test
+  REDIRECT_BACK=/
+  ```
 
 3. **Add NestAutherController to `app.module.ts` file:**
 
@@ -62,7 +65,9 @@ import { NestAutherController } from 'nest-auther';
 })
 export class AppModule {}
 ```
+
 ## Tips
+
 To create secure JWT secret key use this code in terminal:
 `node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"`
 
@@ -112,6 +117,7 @@ const nestAuther = new NestAuther(req, res, 'google');
 ```
 
 Input table for `NestAuther` class:
+
 | Name     | Type                              | Reqired |
 | -------- | --------------------------------- | ------- |
 | req      | Express Request                   | Yes     |
@@ -140,6 +146,7 @@ const tokenData = nestAuther.verifyToken().data;
 ```
 
 Output of `data` table:
+
 | Name      | Type   |
 | --------- | ------ |
 | id        | string |
@@ -209,6 +216,7 @@ const verifiedToken = nestAuther.verifyToken('nameOfToken');
 
 The output is like other providers but we have new inputs here, so new inputs in table is these:
 Table of `makeToken` function:
+
 | Name    | Type                               | Reqired |
 | ------- | ---------------------------------- | ------- |
 | name    | String: default is 'Authorization' | No      |
@@ -218,6 +226,7 @@ Table of `makeToken` function:
 You can pass any options of cookie like `algorithm` and etc to `options`, if you dont pass, it will use default options. Default alorithm of crypt of token is `RS256`
 
 Table of `verifyToken` function input:
+
 | Name | Type                               | Reqired |
 | ---- | ---------------------------------- | ------- |
 | name | String: default is 'Authorization' | No      |
